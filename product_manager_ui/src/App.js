@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link, Redirect, Router } from "@reach/router";
 import './App.css';
-import CreateProduct from './views/CreateProduct';
+import ProductDetails from './views/ProductDetails';
+import Homepage from './views/Homepage';
 
 function App() {
   return (
     <>
-      <Link to="/products/create">Add Products</Link>
       <Router>
-        <CreateProduct path="/products/create" />
+        <Homepage path="/"></Homepage>
+        <ProductDetails path="/products/details/:_id"></ProductDetails>
       </Router>
     </>
   );

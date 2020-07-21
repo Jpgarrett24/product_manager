@@ -20,4 +20,14 @@ module.exports = {
                 res.json(err);
             });
     },
+
+    getOne(req, res) {
+        Product.findById(req.params._id)
+            .then((product) => {
+                res.json(product);
+            })
+            .catch((err) => {
+                res.json(err);
+            });
+    },
 };
