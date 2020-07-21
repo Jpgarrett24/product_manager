@@ -3,6 +3,7 @@ import { Link, Redirect, Router } from "@reach/router";
 import './App.css';
 import ProductDetails from './views/ProductDetails';
 import Homepage from './views/Homepage';
+import EditProduct from './views/EditProduct';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <Router>
         <Homepage path="/"></Homepage>
         <ProductDetails path="/products/details/:_id"></ProductDetails>
+        <EditProduct path="/products/edit/:_id"></EditProduct>
       </Router>
     </>
   );

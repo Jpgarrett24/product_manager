@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 import axios from "axios";
 
 const AllProducts = (props) => {
@@ -15,6 +15,19 @@ const AllProducts = (props) => {
             })
     }, []);
 
+    const edit = (event) => {
+        navigate(`/products/edit/${event.target.value}`);
+    }
+
+    const deleteProduct = (event) => {
+        axios.delete(`http://localhost:8000/api/products/${event.target.value}`)
+            .then((res) => {
+                console.log(res.data._id);
+                setProducts(products.filter((product) => product._id !== res.data._id))
+            })
+            .catch((err) => { console.log(err); });
+    }
+
     if (products === null) {
         return (
             <>
@@ -28,15 +41,18 @@ const AllProducts = (props) => {
         <>
             <h1>All Products:</h1>
             {products.map((product, idx) => {
-                let link = `/products/details/${product._id}`
                 return (
-                    <p id="product" key={product._id}>
-                        <Link to={link}>{product.title}</Link>
-                    </p>
+                    <div key={product._id}>
+                        <p id="product">
+                            <Link to={"/products/details/" + product._id}>{product.title}</Link>
+                        </p>
+                        <button value={product._id} onClick={edit}>Edit</button>
+                        <button value={product._id} onClick={deleteProduct}>Delete</button>
+                    </div>
                 )
             })}
         </>
-    )
-}
+    );
+};
 
 export default AllProducts;

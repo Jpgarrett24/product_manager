@@ -30,4 +30,10 @@ module.exports = {
                 res.json(err);
             });
     },
+
+    delete(req, res) {
+        Product.findByIdAndDelete(req.params._id)
+            .then((product) => { res.json(product) })
+            .catch((err) => { res.json(err) });
+    },
 };
