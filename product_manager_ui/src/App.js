@@ -8,6 +8,7 @@ import EditProduct from './views/EditProduct';
 function App() {
   return (
     <>
+      <Link to="/">Home</Link>
       <Router>
         <Homepage path="/"></Homepage>
         <ProductDetails path="/products/details/:_id"></ProductDetails>

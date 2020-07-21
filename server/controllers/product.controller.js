@@ -36,4 +36,13 @@ module.exports = {
             .then((product) => { res.json(product) })
             .catch((err) => { res.json(err) });
     },
+
+    update(req, res) {
+        Product.findByIdAndUpdate(req.params._id, req.body, {
+            runValidators: true,
+            new: true,
+        })
+            .then((product) => { res.json(product) })
+            .catch((err) => { res.json(err) })
+    },
 };
