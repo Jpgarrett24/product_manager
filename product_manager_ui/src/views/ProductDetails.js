@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { navigate } from "@reach/router";
 import axios from "axios";
+import DeleteButton from "../components/DeleteButton";
+import EditButton from "../components/EditButton";
+import Loading from "../components/Loading";
 
 const ProductDetails = (props) => {
     const [product, setProduct] = useState(null);
@@ -14,22 +17,9 @@ const ProductDetails = (props) => {
             })
     }, [props._id]);
 
-    const edit = (event) => {
-        navigate(`/products/edit/${event.target.value}`);
-    }
-
-    const submitDelete = (event) => {
-        axios.delete(`http://localhost:8000/api/products/${event.target.value}`)
-            .then(navigate('/'))
-            .catch((err) => { console.log(err); });
-    };
-
     if (product === null) {
         return (
-            <>
-                <h1>Product loading...</h1>
-                <img src="https://cdn.lowgif.com/full/bbd4dc3b1f8a454b-loading-gif-transparent-11-gif-images-download.gif" alt="loading screen" />
-            </>
+            <Loading />
         );
     };
 
@@ -38,8 +28,8 @@ const ProductDetails = (props) => {
             <h4>{product.title}</h4>
             <p>Price: ${product.price}</p>
             <p>Description: {product.description}</p>
-            <button value={product._id} onClick={edit}>Edit</button>
-            <button value={product._id} onClick={submitDelete}>Delete</button>
+            <EditButton productID={product._id} />
+            <DeleteButton productID={product._id} deleteFunction={() => { navigate('/') }} />
         </>
     );
 }

@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { navigate } from "@reach/router";
 import axios from "axios";
+import Loading from "../components/Loading";
+import Form from "../components/ProductForm";
 
 const EditProduct = (props) => {
-
+    const { inputs, setInputs } = props;
     const [product, setProduct] = useState(null);
-    const [title, setTitle] = useState([]);
-    const [price, setPrice] = useState([]);
-    const [description, setDescription] = useState([]);
 
     useEffect(() => {
         axios.get(`http://localhost:8000/api/products/${props._id}`)
             .then((res) => {
                 setProduct(res.data);
-                setTitle(res.data.title);
-                setPrice(res.data.price);
-                setDescription(res.data.description);
+                setInputs({
+                    title: res.data.title,
+                    price: res.data.price,
+                    description: res.data.description,
+                })
             })
             .catch((err) => {
                 console.log(err);
             })
     }, [props._id]);
 
-    const updateProduct = (event) => {
-        event.preventDefault();
+    const updateProduct = () => {
         const newProduct = {
-            title,
-            price,
-            description,
+            title: inputs.title,
+            price: inputs.price,
+            description: inputs.description,
         };
         axios.put('http://localhost:8000/api/products/' + props._id, newProduct)
             .then(() => navigate('/products/details/' + props._id))
@@ -36,31 +36,14 @@ const EditProduct = (props) => {
 
     if (product === null) {
         return (
-            <>
-                <h1>Product loading...</h1>
-                <img src="https://cdn.lowgif.com/full/bbd4dc3b1f8a454b-loading-gif-transparent-11-gif-images-download.gif" alt="loading screen" />
-            </>
+            <Loading />
         );
     };
 
     return (
         <>
             <h1>Edit Product</h1>
-            <form onSubmit={updateProduct}>
-                <div className="inputs">
-                    <label htmlFor="title">Title:</label>
-                    <input type="text" name="title" id="title" value={title} onChange={(event) => { setTitle(event.target.value) }} />
-                </div>
-                <div className="inputs">
-                    <label htmlFor="price">Price:</label>
-                    <input type="text" name="price" id="price" value={price} onChange={(event) => { setPrice(event.target.value) }} />
-                </div>
-                <div className="inputs">
-                    <label htmlFor="description">Description:</label>
-                    <textarea name="description" id="description" cols="100" rows="5" value={description} onChange={(event) => { setDescription(event.target.value) }}></textarea>
-                </div>
-                <button>Submit Edits</button>
-            </form>
+            <Form inputs={inputs} setInputs={setInputs} submitFunction={updateProduct} />
         </>
     );
 };
